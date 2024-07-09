@@ -3,21 +3,19 @@ import { StyleSheet, View, Image, ImageSourcePropType } from 'react-native';
 
 interface ScrollViewProps {
   children?: React.ReactNode;
-  imageSource?: ImageSourcePropType; // Hacer opcional la fuente de la imagen
+  imageSource?: ImageSourcePropType; // Make imageSource optional
 }
 
-const defaultImageSource = require('../assets/images/Background.png'); // Definir una imagen por defecto
+const defaultImageSource = require('../assets/images/Background.png'); // Define a default image
 
 const ScrollView: React.FC<ScrollViewProps> = ({ children, imageSource }) => {
-  const backgroundImage = imageSource || defaultImageSource; // Usar la imagen pasada o la por defecto
+  const backgroundImage = imageSource || defaultImageSource; // Use passed image or default
 
   return (
     <View style={styles.container}>
+      <Image source={backgroundImage} style={styles.backgroundImage} />
       <View style={styles.contentContainer}>
         {children}
-      </View>
-      <View style={styles.imageContainer}>
-        <Image source={backgroundImage}/>
       </View>
     </View>
   );
@@ -25,18 +23,19 @@ const ScrollView: React.FC<ScrollViewProps> = ({ children, imageSource }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 0.9,
+    flex: 1,
     backgroundColor: "#fefefe",
   },
-  imageContainer: {
-    flex: 1,
-    zIndex:1,
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight:200,
+  backgroundImage: {
+    ...StyleSheet.absoluteFillObject, // Fill the container
+    width: '100%',
+    height: '100%',
+    zIndex: -1, // Ensure the image is behind the content
+    marginTop:200,
   },
   contentContainer: {
     flex: 1,
+    zIndex: 1, // Ensure content is above the background image
   },
 });
 
