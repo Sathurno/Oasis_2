@@ -17,8 +17,8 @@ export function ThemedText({
 }: ThemedTextProps) {
 
   const [fontsLoaded] = useFonts({
-    'Baloo-Regular': require('../assets/fonts/Baloo-Regular.ttf'),
-    'Baloo2-Regular': require('../assets/fonts/Baloo2-Regular.ttf'),
+    'Baloo-Regular': require('../assets/fonts/Inter-Regular.ttf'),
+    'Baloo2-Regular': require('../assets/fonts/Sora-SemiBold.ttf'),
   });
 
   if (!fontsLoaded) {
