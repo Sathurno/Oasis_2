@@ -1,46 +1,65 @@
-import React, { Suspense, useState } from "react";
-import { StatusBar } from "expo-status-bar";
-import { Image, StyleSheet, View, Text } from "react-native";
-import { Canvas } from "@react-three/fiber/native";
+import React, { useState } from "react";
+import { Image, StyleSheet, View, TouchableOpacity } from "react-native";
+import { useTranslation } from 'react-i18next';
 import ScrollView from "../components/ScrollView";
-import useControls from "r3f-native-orbitcontrols";
-import { Earth } from "../components/Earth2";
-import LogButton from "../components/LogButton"; // Ensure the correct path
+import LogButton from "../components/LogButton";
 import colors from "../constants/Colors";
 import { ThemedText } from "../components/ThemedText";
+import DropDownPicker from 'react-native-dropdown-picker';
+import i18next from "../i18n";
 
 export default function StartPage() {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [OrbitControls, events] = useControls();
+  const { t, i18n } = useTranslation(); // Accede a i18n
+  const [languageOpen, setLanguageOpen] = useState<boolean>(false);
+  const [languageValue, setLanguageValue] = useState<string | null>(i18n.language);
+  const [languageItems] = useState([
+    { label: 'Inglés', value: 'en' },
+    { label: 'Español', value: 'es' },
+    { label: 'Alemán', value: 'de' }
+  ]);
+
+  const handleLanguageChange = (value: string | null) => {
+    if (value) {
+      i18next.changeLanguage(value); // Cambia el idioma
+      setLanguageValue(value); // Actualiza el valor seleccionado
+      setLanguageOpen(false); // Cierra el dropdown
+    }
+  };
 
   return (
     <ScrollView>
       <View style={styles.container}>
         <View style={styles.encabezado}>
-          <Text>version 1.0</Text>
-          <View style={styles.space2}></View>
-          <Text>Español</Text>
+        <ThemedText type="subtitle" style={styles.versionText}>Versión 1.0</ThemedText>
+          <TouchableOpacity onPress={() => setLanguageOpen(!languageOpen)}>
+            <ThemedText type="subtitle">{t('language')}</ThemedText>
+          </TouchableOpacity>
+          <DropDownPicker
+            open={languageOpen}
+            value={languageValue}
+            items={languageItems}
+            setOpen={setLanguageOpen}
+            setValue={setLanguageValue}
+            onChangeValue={handleLanguageChange}
+            style={styles.dropdown}
+            textStyle={styles.dropdownText}
+            dropDownContainerStyle={styles.dropdownContainer}
+            placeholder={t('select_language')} // Placeholder visible when dropdown is closed
+            placeholderStyle={styles.placeholder}
+            containerStyle={styles.dropdownContainerWrapper}
+            
+          />
         </View>
         <View style={styles.loge}>
-          <ThemedText style={styles.oasis} type="title">
-            OASIS
-          </ThemedText>
+          <ThemedText style={styles.oasis} type="title">{t('welcome')}</ThemedText>
           <Image style={styles.gif} source={require("../assets/earth.gif")} />
         </View>
         <View style={styles.subcontainer}>
-          <LogButton
-            title="Iniciar Sesión"
-            buttonColor={colors.azul}
-            textColor="white"
-          />
-          <View style={styles.space}></View>
-          <LogButton
-            title="Registrarse"
-            buttonColor={colors.blanco}
-            textColor="black"
-          />
+          <LogButton title={t('login')} buttonColor={colors.azul} textColor="white" />
+          <View style={styles.space} />
+          <LogButton title={t('register')} buttonColor={colors.blanco} textColor="black" />
         </View>
-        <LogButton mode="text" title="Skip>>" />
+        <LogButton mode="text" title={t('skip')} textColor="#4461F2" />
       </View>
     </ScrollView>
   );
@@ -64,9 +83,6 @@ const styles = StyleSheet.create({
   space: {
     width: 10,
   },
-  space2: {
-    width: 220,
-  },
   subcontainer: {
     flexDirection: "row",
     marginTop: 50,
@@ -74,11 +90,39 @@ const styles = StyleSheet.create({
   },
   oasis: {
     zIndex: 2,
-    marginBottom: -300,
+    marginBottom: -350,
   },
   loge: {
     alignItems: "center",
     alignContent: "center",
     marginTop: 50,
+  },
+  dropdown: {
+    borderWidth: 0, // No border
+    backgroundColor: 'transparent', // Transparent background
+    marginTop: -15,
+  },
+  dropdownText: {
+    fontFamily: 'BalooTamma2_800ExtraBold',
+    color: 'black', // Text color
+    textAlign: 'right', // Alinea el texto a la izquierda
+    
+    
+  },
+  dropdownContainerWrapper: {
+    width: '100%', // Asegura que el contenedor ocupe el 100% del ancho disponible
+    alignItems: 'flex-end', // Alinea el dropdown a la derecha
+  },
+  dropdownContainer: {
+    width: 150,
+    backgroundColor: 'transparent', // Transparent background for dropdown list
+    borderWidth: 0, // No border for dropdown list
+    marginTop: -30,
+  },
+  placeholder: {
+    color: 'black', // Color for placeholder text
+  },
+  versionText: {
+    marginRight: -200, // Space between version text and dropdown
   },
 });
