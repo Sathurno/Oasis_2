@@ -2,7 +2,7 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import StartPage from './tabs/Login';
+import StartPage from './tabs/Register';
 import 'intl-pluralrules';
 const Stack = createStackNavigator();
 
