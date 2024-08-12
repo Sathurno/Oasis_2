@@ -1,62 +1,74 @@
 import * as React from 'react';
-import { Animated, StyleSheet, ViewStyle } from 'react-native';
+import { Image, Animated, StyleSheet, View, ViewStyle } from 'react-native';
 import { Button } from 'react-native-paper';
 import { ThemedText } from "../components/ThemedText";
 
 interface LogButtonProps {
     title?: string;
-    icon?: string;
+    icon?: any; // Cambia a any para manejar imágenes importadas
     onPress?: () => void;
     mode?: 'text' | 'elevated' | 'outlined' | 'contained' | 'contained-tonal';
     textColor?: string;
     buttonColor?: string;
+    style?: ViewStyle; // Agregar la posibilidad de pasar estilos personalizados
+    sizeText?: number; // Agregar la posibilidad de pasar el tamaño de texto personalizado
 }
 
 const LogButton = ({
-  title = "Press",
-  icon = '',
+  title = "",
+  icon,
   onPress,
+  sizeText = 14, // Valor predeterminado de tamaño de texto
   mode = 'elevated',
   textColor = "black",
   buttonColor,
+  style = {}, // Añadir un valor predeterminado para style
 }: LogButtonProps) => {
-  const scale = React.useRef(new Animated.Value(1)).current; // Initial scale value
+  const scale = React.useRef(new Animated.Value(1)).current;
 
   const handlePressIn = () => {
     Animated.spring(scale, {
-      toValue: 0.95, // Scale down
+      toValue: 0.95,
       friction: 4,
       tension: 50,
-      useNativeDriver: true, // Use native driver for better performance
+      useNativeDriver: true,
     }).start();
   };
 
   const handlePressOut = () => {
     Animated.spring(scale, {
-      toValue: 1, // Scale back to original size
+      toValue: 1,
       friction: 4,
       tension: 50,
-      useNativeDriver: true, // Use native driver for better performance
+      useNativeDriver: true,
     }).start();
   };
 
   return (
-    <Animated.View style={[styles.buttonContainer, { transform: [{ scale }] }]}>
+    <Animated.View style={[styles.buttonContainer, { transform: [{ scale }] }, style]}>
       <Button
-        icon={icon}
         mode={mode}
         onPress={onPress}
-        onPressIn={handlePressIn} // Handle press in
-        onPressOut={handlePressOut} // Handle press out
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
         textColor={textColor}
         buttonColor={buttonColor}
-        style={[styles.button, mode === 'elevated' && styles.elevated]} // Apply styles based on mode
-        contentStyle={styles.buttonContent} // Centers the content
-        rippleColor="rgba(0, 0, 0, 0.1)" // Adds ripple effect on click
+        style={[styles.button, mode === 'elevated' && styles.elevated]}
+        contentStyle={styles.buttonContent}
+        rippleColor="rgba(0, 0, 0, 0.1)"
       >
-        <ThemedText type="subtitle" style={styles.text}>
-          {title}
-        </ThemedText>
+        {icon && (
+          <View style={styles.iconContainer}>
+            <Image source={icon} style={styles.icon} resizeMode="contain" />
+          </View>
+        )}
+        {title && (
+          <View style={styles.textContainer}>
+            <ThemedText type="subtitle" style={[styles.text, { fontSize: sizeText, color: textColor }]}>
+              {title}
+            </ThemedText>
+          </View>
+        )}
       </Button>
     </Animated.View>
   );
@@ -64,23 +76,36 @@ const LogButton = ({
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    borderRadius: 8, // Adjust the border radius if needed
+    borderRadius: 8,
   },
   button: {
-    borderRadius: 18, // Ensure button content has rounded corners
+    borderRadius: 6,
+    alignItems: 'center', // Alinea verticalmente el ícono y el texto
+    padding: 8, // Asegura que el botón tenga algo de relleno
   },
   elevated: {
-    elevation: 4, // Adds shadow and elevation effect for 'elevated' mode
+    elevation: 4,
   },
   buttonContent: {
     flexDirection: 'row',
-    justifyContent: 'center', // Centers the content horizontally
-    alignItems: 'center',     // Centers the content vertically
-    paddingTop: 5, //
+    justifyContent: 'center',
+    alignItems: 'center',
+    
+  },
+  iconContainer: {
+    justifyContent: 'center', // Centra el ícono verticalmente
+    alignItems: 'center', // Centra el ícono horizontalmente
+    marginRight: 8, // Espacio entre el ícono y el texto
+    
+  },
+  icon: {
+    width: 24, // Ajusta el tamaño del ícono
+    height: 24,
+  },
+  textContainer: {
   },
   text: {
-    textAlign: 'center', // Centers the text within ThemedText
-    fontSize: 13, // Adjust font size if needed
+    textAlign: 'center',
   },
 });
 

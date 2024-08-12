@@ -14,6 +14,7 @@ export type ThemedTextProps = TextProps & {
   darkColor?: string;
   type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';
   children: React.ReactNode; // Ensure children can be of type string or ReactNode
+  sizeText?: number; // Agrega la posibilidad de pasar un tamaño de texto personalizado
 };
 
 const fontFamilies = {
@@ -30,6 +31,7 @@ export function ThemedText({
   darkColor,
   type = 'default',
   children,
+  sizeText, // Destructura la nueva prop
   ...rest
 }: ThemedTextProps) {
   const [fontsLoaded] = useFonts({
@@ -53,8 +55,17 @@ export function ThemedText({
     <Text
       style={[
         styles.base,
-        type === 'default' && { fontFamily: fontFamilies.default, fontSize: 16, lineHeight: 24 },
-        type === 'defaultSemiBold' && { fontFamily: fontFamilies.defaultSemiBold, fontSize: 16, lineHeight: 24, fontWeight: '600' },
+        type === 'default' && { 
+          fontFamily: fontFamilies.default, 
+          fontSize: sizeText || 16, // Usa sizeText si está definido
+          lineHeight: sizeText ? sizeText * 1.5 : 24 
+        },
+        type === 'defaultSemiBold' && { 
+          fontFamily: fontFamilies.defaultSemiBold, 
+          fontSize: sizeText || 16, 
+          lineHeight: sizeText ? sizeText * 1.5 : 24, 
+          fontWeight: '600' 
+        },
         type === 'title' && {
           fontFamily: fontFamilies.title,
           color: 'white',
@@ -62,17 +73,29 @@ export function ThemedText({
           textShadowOffset: { width: 0, height: 13 },
           textShadowRadius: 20,
           opacity: 0.86,
+          fontSize: sizeText || 36, // Ajusta tamaño para el tipo 'title'
         },
-        type === 'subtitle' && { fontFamily: fontFamilies.subtitle },
-        type === 'link' && { fontFamily: fontFamilies.link, fontSize: 16, color: '#0a7ea4' },
+        type === 'subtitle' && { 
+          fontFamily: fontFamilies.subtitle, 
+          fontSize: sizeText || 24, // Ajusta tamaño para el tipo 'subtitle'
+        },
+        type === 'link' && { 
+          fontFamily: fontFamilies.link, 
+          fontSize: sizeText || 16, 
+          color: '#0a7ea4' 
+        },
         style,
       ]}
       {...rest}
     >
       {type === 'title' && isString && (
         <>
-          <Text style={styles.firstLetter}>{firstLetter}</Text>
-          <Text style={styles.restOfText}>{restOfText}</Text>
+          <Text style={[styles.firstLetter, { fontSize: sizeText || 110 }]}>
+            {firstLetter}
+          </Text>
+          <Text style={[styles.restOfText, { fontSize: sizeText || 65 }]}>
+            {restOfText}
+          </Text>
         </>
       )}
       {type !== 'title' && children}
@@ -85,11 +108,9 @@ const styles = StyleSheet.create({
     // Basic styles if needed
   },
   firstLetter: {
-    fontSize: 110,
     fontFamily: 'BalooTamma2_800ExtraBold',
   },
   restOfText: {
-    fontSize: 65,
     fontFamily: 'BalooTamma2_800ExtraBold',
   },
 });
