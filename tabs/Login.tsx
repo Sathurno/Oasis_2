@@ -7,8 +7,16 @@ import colors from "../constants/Colors";
 import { ThemedText } from "../components/ThemedText";
 import DropDownPicker from 'react-native-dropdown-picker';
 import i18next from "../i18n";
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../types'; // Asegúrate de que el archivo de tipos esté correctamente importado
 
-export default function LoginPage() {
+type LoginPageNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
+
+interface Props {
+    navigation: LoginPageNavigationProp;
+  }
+
+const Login: React.FC<Props> = ({ navigation }) => {
   const { t, i18n } = useTranslation();
   const [languageOpen, setLanguageOpen] = useState<boolean>(false);
   const [languageValue, setLanguageValue] = useState<string | null>(i18n.language);
@@ -98,7 +106,7 @@ export default function LoginPage() {
             style={styles.socialButton}
         />
         </View>
-        <TouchableOpacity style={styles.container2}>
+        <TouchableOpacity style={styles.container2} onPress={() => navigation.navigate('Register')}>
           <ThemedText style={styles.register} type="subtitle" sizeText={18}>
             {t('no_account')} <ThemedText  type="subtitle"  sizeText={18} style={styles.registerLink}>{t('register_here')}</ThemedText>
           </ThemedText>
@@ -221,3 +229,5 @@ const styles = StyleSheet.create({
     alignItems: 'center', // Centra el contenido horizontalmente
   },
 });
+
+export default Login;
