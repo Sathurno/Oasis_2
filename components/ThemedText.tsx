@@ -72,7 +72,7 @@ export function ThemedText({
           textShadowColor: 'rgba(1, 1, 1, 0.55)',
           textShadowOffset: { width: 0, height: 13 },
           textShadowRadius: 20,
-          opacity: 0.86,
+          opacity: 0.96,
           fontSize: sizeText || 36, // Ajusta tamaño para el tipo 'title'
         },
         type === 'subtitle' && { 

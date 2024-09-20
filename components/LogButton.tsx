@@ -3,6 +3,7 @@ import { Image, Animated, StyleSheet, View, ViewStyle } from 'react-native';
 import { Button } from 'react-native-paper';
 import { ThemedText } from "../components/ThemedText";
 
+
 interface LogButtonProps {
     title?: string;
     icon?: any; // Cambia a any para manejar imágenes importadas
