@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import colors from '../constants/Colors';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types';
@@ -8,10 +9,18 @@ type HomePageNavigationProp = StackNavigationProp<RootStackParamList>;
 
 interface Props {
     navigation: HomePageNavigationProp;
+    currentScreen: string;  // Nuevo prop para recibir la pantalla actual
 }
 
-const MicroMenu: React.FC<Props> = ({ navigation }) => {
-    const [selectedIcon, setSelectedIcon] = useState<string>('home'); // Estado para el icono seleccionado
+const MicroMenu: React.FC<Props> = ({ navigation, currentScreen }) => {
+    const [selectedIcon, setSelectedIcon] = useState<string>('home');
+
+    useFocusEffect(
+        React.useCallback(() => {
+            // Cambiar el ícono seleccionado basado en la pantalla actual
+            setSelectedIcon(currentScreen);
+        }, [currentScreen])
+    );
 
     const handleIconPress = (iconName: string) => {
         setSelectedIcon(iconName); // Cambiar el icono seleccionado

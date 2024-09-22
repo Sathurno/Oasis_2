@@ -23,6 +23,7 @@ const App = () => {
         <Stack.Screen name="Home_empty" component={Home_empty} options={{ headerShown: false }} />
         <Stack.Screen name="Home_stack" component={Home_stack} options={{ headerShown: false }} />
         <Stack.Screen name="Search" component={Search} options={{ headerShown: false }} />
+        <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

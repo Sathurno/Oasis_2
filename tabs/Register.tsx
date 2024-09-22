@@ -102,7 +102,7 @@ const Register: React.FC<Props> = ({ navigation }) => {
                 </View>
                 <TouchableOpacity style={styles.container2} onPress={() => navigation.navigate('Login')}>
                     <ThemedText style={styles.register} type="subtitle" sizeText={18}>
-                        {t('account')} <ThemedText type="subtitle" sizeText={18} style={styles.registerLink}>{t('register_here')}</ThemedText>
+                        {t('account')} <ThemedText type="subtitle" sizeText={18} style={styles.registerLink}>{t('login_here')}</ThemedText>
                     </ThemedText>
                 </TouchableOpacity>
 

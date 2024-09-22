@@ -4,9 +4,11 @@ import { useTranslation } from 'react-i18next';
 import ScrollView from "../components/ScrollView";
 import LogButton from "../components/LogButton";
 import colors from "../constants/Colors";
+import MicroMenu from '../components/MicroMenu';
 import { ThemedText } from "../components/ThemedText";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types';
+import i18next from "../i18n";
 
 type ProfilePageNavigationProp = StackNavigationProp<RootStackParamList, 'Profile'>;
 
@@ -15,20 +17,34 @@ interface Props {
 }
 
 const Profile: React.FC<Props> = ({ navigation }) => {
-    const { t } = useTranslation();
     const [name, setName] = useState<string>('Ariana Grindel');
     const [email, setEmail] = useState<string>('arianGrindel23@gmail.com');
+    const { t, i18n } = useTranslation();
+    const [languageOpen, setLanguageOpen] = useState<boolean>(false);
+    const [languageValue, setLanguageValue] = useState<string | null>(i18n.language);
+    const [languageItems] = useState([
+        { label: 'Inglés', value: 'en' },
+        { label: 'Español', value: 'es' },
+        { label: 'Alemán', value: 'de' }
+    ]);
 
+    const handleLanguageChange = (value: string | null) => {
+        if (value) {
+            i18next.changeLanguage(value);
+            setLanguageValue(value);
+            setLanguageOpen(false);
+        }
+    };
     return (
         <ScrollView>
             <View style={styles.container}>
                 {/* Avatar y Fondo */}
                 <View style={styles.header}>
-                    <Image source={require('../assets/images/pixel_background.png')} style={styles.backgroundImage} />
+                    <Image source={require('../assets/images/Background.png')} style={styles.backgroundImage} />
                     <View style={styles.avatarContainer}>
-                        <Image source={require('../assets/images/avatar.png')} style={styles.avatar} />
+                        <Image source={require('../assets/images/Ícono_foto.png')} style={styles.avatar} />
                         <TouchableOpacity style={styles.editButton}>
-                            <Image source={require('../assets/images/edit_icon.png')} style={styles.editIcon} />
+                            <Image source={require('../assets/images/Ícono_foto.png')} style={styles.editIcon} />
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -75,18 +91,7 @@ const Profile: React.FC<Props> = ({ navigation }) => {
                     />
                 </View>
 
-                {/* Navegación Inferior */}
-                <View style={styles.footer}>
-                    <TouchableOpacity style={styles.footerIcon}>
-                        <Image source={require('../assets/images/home_icon.png')} style={styles.icon} />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.footerIcon}>
-                        <Image source={require('../assets/images/profile_icon.png')} style={styles.icon} />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.footerIcon}>
-                        <Image source={require('../assets/images/settings_icon.png')} style={styles.icon} />
-                    </TouchableOpacity>
-                </View>
+                <MicroMenu navigation={navigation} currentScreen="Profile" />
             </View>
         </ScrollView>
     );

@@ -35,7 +35,7 @@ const Home: React.FC<Props> = ({ navigation }) => {
                     startTime="10/05/2024 15h30" // Fecha y hora de inicio
                 />
                 <BatteryButtons returnButtonText='Devolver' ></BatteryButtons>
-                <MicroMenu navigation={navigation} />
+                <MicroMenu navigation={navigation} currentScreen='Home' />
             </View>
         </ScrollView>
     );

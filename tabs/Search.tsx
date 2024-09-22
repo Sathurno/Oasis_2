@@ -17,7 +17,7 @@ interface Props {
 
 const Search: React.FC<Props> = ({ navigation }) => {
     const { t } = useTranslation();
-    
+
     // Animación para la imagen flotante
     const moveAnim = useRef(new Animated.Value(0)).current;
 
@@ -50,10 +50,10 @@ const Search: React.FC<Props> = ({ navigation }) => {
     // Función para generar datos aleatorios
     const generateRandomData = (city: string) => {
         const places = [
-            'Parque del Río', 
-            'Zoologico "Hogar"', 
-            'Parque Natural', 
-            'Jardín Botánico', 
+            'Parque del Río',
+            'Zoologico "Hogar"',
+            'Parque Natural',
+            'Jardín Botánico',
             'Reserva Natural'
         ];
         const randomPlace = places[Math.floor(Math.random() * places.length)];
@@ -108,14 +108,14 @@ const Search: React.FC<Props> = ({ navigation }) => {
     // Renderizado de las tarjetas con los resultados
     const renderResult = ({ item, index }: any) => {
         const isUnavailable = index === 3; // Tarjeta roja
-    
+
         return (
-            <TouchableOpacity 
+            <TouchableOpacity
                 activeOpacity={0.6} // Cambiar la opacidad al hacer clic
             >
-                <View 
+                <View
                     style={[
-                        styles.resultCard, 
+                        styles.resultCard,
                         isUnavailable && styles.unavailableCard
                     ]}
                 >
@@ -128,13 +128,13 @@ const Search: React.FC<Props> = ({ navigation }) => {
                                 Baterías: {item.batteries}/{item.batteries + Math.floor(Math.random() * 5)}   Taquillas: {item.lockers}/{item.lockers + Math.floor(Math.random() * 5)}
                             </Text>
                         </View>
-    
+
                         {/* Ícono de play al lado derecho */}
                         <Image
                             source={
-                                isUnavailable 
-                                ? require("../assets/images/Ícono_play_blanco.png") 
-                                : require("../assets/images/Ícono_play.png")
+                                isUnavailable
+                                    ? require("../assets/images/Ícono_play_blanco.png")
+                                    : require("../assets/images/Ícono_play.png")
                             }
                             style={styles.play}
                         />
@@ -143,10 +143,10 @@ const Search: React.FC<Props> = ({ navigation }) => {
             </TouchableOpacity>
         );
     };
-    
-    
-    
-    
+
+
+
+
 
     // Renderizado de las sugerencias mientras escribe
     const renderSuggestion = (suggestion: string) => (
@@ -160,25 +160,25 @@ const Search: React.FC<Props> = ({ navigation }) => {
             <View style={styles.container}>
                 {/* Encabezado */}
                 <Header navigation={navigation} />
-                
+
                 <View style={styles.inputContainer}>
                     {/* Icono de lupa a la izquierda */}
                     <Image
                         source={require('../assets/images/Ícono_lupa.png')}
                         style={styles.iconLeft}
                     />
-                    
+
                     {/* TextInput */}
                     <TextInput
                         ref={textInputRef}
                         placeholder={t('Introduce una ubicación...')}
                         placeholderTextColor={colors.gray}
-                        style={[styles.input, styles.textInput]} 
+                        style={[styles.input, styles.textInput]}
                         value={searchText}
                         onChangeText={handleSearch}
                         onFocus={handleInputFocus} // Limpiar al enfocar
                     />
-                    
+
                     {/* Icono de configuración a la derecha */}
                     <Image
                         source={require('../assets/images/Ícono_configuration.png')}
@@ -203,7 +203,7 @@ const Search: React.FC<Props> = ({ navigation }) => {
                 {/* Si no hay resultados, mostrar ThemedText */}
                 {results.length === 0 && searchText.length === 0 && (
                     <View style={styles.centro}>
-                        <ThemedText type="title" sizeText={45} style= {styles.buscarOasis}>{t('Buscar Oasis')}</ThemedText>
+                        <ThemedText type="title" sizeText={45} style={styles.buscarOasis}>{t('Buscar Oasis')}</ThemedText>
 
                     </View>
                 )}
@@ -220,7 +220,7 @@ const Search: React.FC<Props> = ({ navigation }) => {
                     </>
                 )}
 
-                <MicroMenu navigation={navigation} />
+                <MicroMenu navigation={navigation} currentScreen='Search' />
             </View>
         </ScrollView>
     );
@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
     iconLeft: {
         width: 20,
         height: 20,
-        tintColor: colors.gray, 
+        tintColor: colors.gray,
     },
     iconRight: {
         width: 30,
@@ -305,7 +305,7 @@ const styles = StyleSheet.create({
     },
     unavailableCard: {
         backgroundColor: '#ed6767', // Fondo rojo para la tarjeta "indisponible"
-        
+
     },
     resultTitle: {
         fontSize: 16,
