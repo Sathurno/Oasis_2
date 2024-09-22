@@ -15,58 +15,59 @@ const MicroMenu: React.FC<Props> = ({ navigation }) => {
 
     const handleIconPress = (iconName: string) => {
         setSelectedIcon(iconName); // Cambiar el icono seleccionado
+        navigation.navigate(iconName as keyof RootStackParamList);
     };
 
     return (
         <View style={styles.microMenu}>
             <View style={styles.rectangle}>
                 <View style={styles.innerRectangle}>
-                    <TouchableOpacity onPress={() => handleIconPress('home')} style={{ alignItems: 'center' }}>
+                    <TouchableOpacity onPress={() => handleIconPress('Home')} style={{ alignItems: 'center' }}>
                         <Image
                             source={
-                                selectedIcon === 'home'
+                                selectedIcon === 'Home'
                                     ? require('../assets/images/Ícono_home_negrita.png') // Icono en negrita
                                     : require('../assets/images/Ícono_home.png') // Icono regular
                             }
                             style={styles.menuIcons}
                         />
-                        {selectedIcon === 'home' && <View style={styles.blueCircle} />} 
+                        {selectedIcon === 'Home' && <View style={styles.blueCircle} />}
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => handleIconPress('search')} style={{ alignItems: 'center' }}>
+                    <TouchableOpacity onPress={() => handleIconPress('Search')} style={{ alignItems: 'center' }}>
                         <Image
                             source={
-                                selectedIcon === 'search'
+                                selectedIcon === 'Search'
                                     ? require('../assets/images/Ícono_lupa_negrita.png') // Icono en negrita
                                     : require('../assets/images/Ícono_lupa.png') // Icono regular
                             }
                             style={styles.menuIcons}
                         />
-                        {selectedIcon === 'search' && <View style={styles.blueCircle} />} 
+                        {selectedIcon === 'Search' && <View style={styles.blueCircle} />}
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => handleIconPress('notifications')} style={{ alignItems: 'center' }}>
+                    <TouchableOpacity onPress={() => handleIconPress('Notifications')} style={{ alignItems: 'center' }}>
                         <Image
                             source={
-                                selectedIcon === 'notifications'
+                                selectedIcon === 'Notifications'
                                     ? require('../assets/images/Ícono_notificación_negrita.png') // Icono en negrita
                                     : require('../assets/images/Ícono_notificación.png') // Icono regular
                             }
                             style={styles.menuIcons}
                         />
-                        {selectedIcon === 'notifications' && <View style={styles.blueCircle} />} 
+                        {selectedIcon === 'Notifications' && <View style={styles.blueCircle} />}
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => handleIconPress('user')} style={{ alignItems: 'center' }}>
+                    <TouchableOpacity onPress={() => handleIconPress('Profile')} style={{ alignItems: 'center' }}>
                         <Image
                             source={
-                                selectedIcon === 'user'
+                                selectedIcon === 'Profile'
                                     ? require('../assets/images/Ícono_usuario_negrita.png') // Icono en negrita
                                     : require('../assets/images/Ícono_usuario.png') // Icono regular
                             }
                             style={styles.menuIconUser}
                         />
-                        {selectedIcon === 'user' && <View style={styles.blueCircle} />} 
+                        {selectedIcon === 'Profile' && <View style={styles.blueCircle} />}
                     </TouchableOpacity>
                 </View>
             </View>

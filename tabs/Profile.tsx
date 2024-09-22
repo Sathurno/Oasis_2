@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
         position: "absolute",
         right: 0,
         bottom: 0,
-        backgroundColor: colors.white,
+        backgroundColor: colors.blanco,
         borderRadius: 20,
         padding: 5,
     },
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 5,
         paddingHorizontal: 10,
-        backgroundColor: colors.white,
+        backgroundColor: colors.blanco,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,

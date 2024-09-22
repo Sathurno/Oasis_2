@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
         width: 360,
         height: 260,
         marginBottom: 100,
-      },
+    },
 });
 
 export default Home_empty;

@@ -29,6 +29,7 @@
     "install": "^0.13.0",
     "intl-pluralrules": "^2.0.1",
     "npm": "^10.8.1",
+    "oasis": "file:",
     "r3f-native-orbitcontrols": "^1.0.12",
     "react": "^18.2.0",
     "react-dom": "18.2.0",

@@ -13,8 +13,8 @@ import { RootStackParamList } from '../types'; // Asegúrate de que el archivo d
 type LoginPageNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
 
 interface Props {
-    navigation: LoginPageNavigationProp;
-  }
+  navigation: LoginPageNavigationProp;
+}
 
 const Login: React.FC<Props> = ({ navigation }) => {
   const { t, i18n } = useTranslation();
@@ -80,35 +80,35 @@ const Login: React.FC<Props> = ({ navigation }) => {
           </TouchableOpacity>
         </View>
         <View style={{ width: '100%', marginBottom: 20 }}>
-            <LogButton 
-                title={t('sign_in')} 
-                buttonColor={colors.azul} 
-                textColor="white"  
-                sizeText={17}
-                style={{ width: "100%" }} // Hace que el botón ocupe todo el ancho del contenedor
-            />
+          <LogButton
+            title={t('sign_in')}
+            buttonColor={colors.azul}
+            textColor="white"
+            sizeText={17}
+            style={{ width: "100%" }} // Hace que el botón ocupe todo el ancho del contenedor
+          />
         </View>
         <ThemedText type="subtitle" style={styles.or}>{t('or_continue_with')}</ThemedText>
         <View style={styles.socialContainer}>
-        <LogButton
+          <LogButton
             icon={require('../assets/images/Ícono_google.png')}
             buttonColor="white"
             style={styles.socialButton}
-        />
-        <LogButton
+          />
+          <LogButton
             icon={require('../assets/images/Icono_apple.png')}
             buttonColor="white"
             style={styles.socialButton}
-        />
-        <LogButton
+          />
+          <LogButton
             icon={require('../assets/images/Ícono_facebook.png')}
             buttonColor="white"
             style={styles.socialButton}
-        />
+          />
         </View>
         <TouchableOpacity style={styles.container2} onPress={() => navigation.navigate('Register')}>
           <ThemedText style={styles.register} type="subtitle" sizeText={18}>
-            {t('no_account')} <ThemedText  type="subtitle"  sizeText={18} style={styles.registerLink}>{t('register_here')}</ThemedText>
+            {t('no_account')} <ThemedText type="subtitle" sizeText={18} style={styles.registerLink}>{t('register_here')}</ThemedText>
           </ThemedText>
         </TouchableOpacity>
       </View>
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
     justifyContent: "center", // Centra los botones en el contenedor
     width: "100%",
     marginBottom: 20,
-    
+
   },
   register: {
     marginTop: 30,
