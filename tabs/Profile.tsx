@@ -44,7 +44,7 @@ const Profile: React.FC<Props> = ({ navigation }) => {
                     <View style={styles.avatarContainer}>
                         <Image source={require('../assets/images/Ícono_foto.png')} style={styles.avatar} />
                         <TouchableOpacity style={styles.editButton}>
-                            <Image source={require('../assets/images/Ícono_foto.png')} style={styles.editIcon} />
+                            <Image source={require('../assets/images/ajustes.png')} style={styles.editIcon} />
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -61,7 +61,7 @@ const Profile: React.FC<Props> = ({ navigation }) => {
                     />
                 </View>
                 <View style={styles.inputContainer}>
-                    <ThemedText type="subtitle" style={styles.label}>{t('email')}</ThemedText>
+                    <ThemedText type="subtitle" style={styles.label}>{t('Email')}</ThemedText>
                     <TextInput
                         value={email}
                         onChangeText={setEmail}

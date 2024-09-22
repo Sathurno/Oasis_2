@@ -34,7 +34,6 @@ const BatteryInfo: React.FC<BatteryInfoProps> = ({ totalRemaining, accumulatedCo
                 <Image source={require('../assets/images/Ícono_arrow_delgada.png')} style={styles.arrowReverse}></Image>
                 <Image source={require('../assets/images/battery_low.png')} style={styles.batteryImage} />
                 <Image source={require('../assets/images/Ícono_arrow_delgada.png')} style={styles.arrow}></Image>
-                
             </View>
         </View>
     );
@@ -45,14 +44,14 @@ const styles = StyleSheet.create({
         marginBottom: 50,
         width: 250,
         alignSelf: "center",
-        
+
     },
-    arrow:{
-        width:40,
+    arrow: {
+        width: 40,
         height: 40,
     },
-    arrowReverse:{
-        width:40,
+    arrowReverse: {
+        width: 40,
         height: 40,
         transform: [{ rotate: '180deg' }],
     },

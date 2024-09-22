@@ -27,12 +27,12 @@ const Home_stack: React.FC<Props> = ({ navigation, tipo }) => {
                 {/* Encabezado */}
                 <Header navigation={navigation} />
                 <HeaderSection isLocker={tipo} />
-                
+
                 {/* Información de la batería */}
                 <ThemedText type="subtitle" style={styles.subtitle}>
                     {tipo ? t('Actualmente tienes 3 baterías en Taquilla') : t('Actualmente tienes 4 baterías')}
                 </ThemedText>
-                
+
                 <View style={styles.stack}>
                     {/* Cambia las imágenes según el valor de `tipo` */}
                     {true ? (
@@ -52,7 +52,7 @@ const Home_stack: React.FC<Props> = ({ navigation, tipo }) => {
                 </View>
 
                 <BatteryButtons returnButtonText='Devolver' />
-                <MicroMenu navigation={navigation} />
+                <MicroMenu navigation={navigation} currentScreen='Home_stack' />
             </View>
         </ScrollView>
     );
