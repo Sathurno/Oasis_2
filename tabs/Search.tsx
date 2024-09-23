@@ -46,6 +46,12 @@ const Search: React.FC<Props> = ({ navigation }) => {
     const [results, setResults] = useState<any[]>([]);
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const [searchStarted, setSearchStarted] = useState(false); // Para manejar si se ha iniciado una búsqueda
+    const [showCheckboxes, setShowCheckboxes] = useState(false);
+    const [selectedOption, setSelectedOption] = useState<'batteries' | 'lockers' | null>(null);
+    
+    const handleIconPress = () => {
+        setShowCheckboxes(prev => !prev); // Alternar la visibilidad de los checkboxes
+    };
 
     // Función para generar datos aleatorios
     const generateRandomData = (city: string) => {
@@ -71,21 +77,45 @@ const Search: React.FC<Props> = ({ navigation }) => {
     // Función para manejar el texto ingresado
     const handleSearch = (text: string) => {
         setSearchText(text);
-        setSearchStarted(true); // Cuando se empieza a escribir, la búsqueda ha comenzado
-
-        // Generar sugerencias
+        setSearchStarted(true);
+    
         const cities = ['Valencia', 'Madrid', 'Barcelona', 'Sevilla', 'Zaragoza'];
         const filteredSuggestions = cities.map(city => `${text} del Río 34, ${city}, España`);
         setSuggestions(filteredSuggestions);
-
-        // Simular búsqueda si el texto tiene más de 2 caracteres
+    
         if (text.length > 0) {
             const simulatedResults = filteredSuggestions.map(city => generateRandomData(city.split(',')[1].trim()));
-            setResults(simulatedResults);
+            
+            // Filtrar según la opción seleccionada
+            const filteredResults = simulatedResults.filter(item => {
+                if (selectedOption === 'batteries') {
+                    return item.batteries > 0; // Solo mostrar resultados con baterías
+                } else if (selectedOption === 'lockers') {
+                    return item.lockers > 0; // Solo mostrar resultados con taquillas
+                }
+                return true; // Mostrar todos si no hay opción seleccionada
+            });
+            
+            setResults(filteredResults);
         } else {
             setResults([]);
         }
     };
+    const handleOptionSelect = (option: 'batteries' | 'lockers') => {
+        if (selectedOption === option) {
+            // Desmarcar la opción si ya está seleccionada
+            setSelectedOption(null);
+        } else {
+            // Seleccionar una opción
+            setSelectedOption(option);
+        }
+        setResults(results.map(result => ({
+            ...result,
+            visibleBatteries: result.batteries ,
+            visibleLockers:  result.lockers,
+        })));
+    };
+    
 
     // Función para manejar la selección de una sugerencia
     const handleSuggestionPress = (suggestion: string) => {
@@ -124,9 +154,18 @@ const Search: React.FC<Props> = ({ navigation }) => {
                             <Text style={[styles.resultTitle, isUnavailable && { color: 'white' }]}>
                                 {item.name}
                             </Text>
-                            <Text style={[styles.resultInfo, isUnavailable && { color: 'white' }]}>
-                                Baterías: {item.batteries}/{item.batteries + Math.floor(Math.random() * 5)}   Taquillas: {item.lockers}/{item.lockers + Math.floor(Math.random() * 5)}
-                            </Text>
+                            <View style={{flexDirection:"row"}}>
+                            {(selectedOption === 'batteries' || selectedOption=== null) && (
+                                <Text style={styles.resultInfo}>
+                                    Baterías: {item.batteries}/{item.batteries + Math.floor(Math.random() * 5)}
+                                </Text>
+                            )}
+                            {(selectedOption === 'lockers' || selectedOption=== null) && (
+                                <Text style={styles.resultInfo} >
+                                    Taquillas: {item.lockers}/{item.lockers + Math.floor(Math.random() * 5)}
+                                </Text>
+                            )}
+                            </View>
                         </View>
 
                         {/* Ícono de play al lado derecho */}
@@ -143,7 +182,16 @@ const Search: React.FC<Props> = ({ navigation }) => {
             </TouchableOpacity>
         );
     };
-
+    const renderCheckboxes = () => (
+        <View style={styles.checkboxContainer}>
+        <TouchableOpacity onPress={() => handleOptionSelect('batteries')}>
+            <Text style={styles.checkboxText}>{selectedOption === 'batteries' ? '☑️' : '☐'} Baterías</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => handleOptionSelect('lockers')}>
+            <Text style={styles.checkboxText}>{selectedOption === 'lockers' ? '☑️' : '☐'} Taquillas</Text>
+        </TouchableOpacity>
+    </View>
+    );
 
 
 
@@ -177,13 +225,19 @@ const Search: React.FC<Props> = ({ navigation }) => {
                         value={searchText}
                         onChangeText={handleSearch}
                         onFocus={handleInputFocus} // Limpiar al enfocar
+                        onBlur={() => {setSuggestions([]);}}
                     />
 
                     {/* Icono de configuración a la derecha */}
-                    <Image
-                        source={require('../assets/images/Ícono_configuration.png')}
-                        style={styles.iconRight}
-                    />
+                    <TouchableOpacity onPress={handleIconPress}>
+                        <Image
+                            source={require('../assets/images/Ícono_configuration.png')}
+                            style={styles.iconRight}
+                        />
+                    </TouchableOpacity>
+                    {/* Mostrar checkboxes si está activado */}
+                {showCheckboxes && renderCheckboxes()}
+
                 </View>
 
                 {/* Mostrar sugerencias mientras escribe */}
@@ -314,6 +368,7 @@ const styles = StyleSheet.create({
     resultInfo: {
         fontSize: 14,
         color: colors.gray,
+        marginRight: 10,
     },
     resultsContainer: {
         paddingBottom: 20,
@@ -343,6 +398,23 @@ const styles = StyleSheet.create({
         position: 'absolute',
         zIndex: -1, // Para que quede debajo de las tarjetas
     },
+    checkboxContainer: {
+        flexDirection: 'row',
+        backgroundColor: 'white',
+        padding: 10,
+        borderRadius: 5,
+        position: 'absolute',
+        top: -40, // Ajustar según sea necesario
+        right: 0, // Ajustar según sea necesario
+        elevation: 5,
+        zIndex: 10,
+    },
+    checkboxText: {
+        fontSize: 13,
+        marginRight:10,
+
+    },
+    
 });
 
 export default Search;
