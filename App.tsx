@@ -9,6 +9,7 @@ import Home_empty from './tabs/Home_empty';
 import Home_stack from './tabs/Home_stack';
 import Search from './tabs/Search';
 import Profile from './tabs/Profile';
+import Result from './tabs/Result';
 import 'intl-pluralrules';
 
 const Stack = createStackNavigator();
@@ -16,7 +17,7 @@ const Stack = createStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="Profile">
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
         <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
@@ -24,6 +25,7 @@ const App = () => {
         <Stack.Screen name="Home_stack" component={Home_stack} options={{ headerShown: false }} />
         <Stack.Screen name="Search" component={Search} options={{ headerShown: false }} />
         <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
+        <Stack.Screen name="Result" component={Result} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -6,4 +6,5 @@ export type RootStackParamList = {
   Home_stack: undefined;
   Search: undefined;
   Profile: undefined;
+  Result: undefined;
 };

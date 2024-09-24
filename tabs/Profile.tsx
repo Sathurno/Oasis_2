@@ -38,9 +38,10 @@ const Profile: React.FC<Props> = ({ navigation }) => {
     return (
         <ScrollView>
             <View style={styles.container}>
+            <Image source={require('../assets/images/Profile_wallpaper.png')} style={styles.backgroundImage} />
                 {/* Avatar y Fondo */}
                 <View style={styles.header}>
-                    <Image source={require('../assets/images/Background.png')} style={styles.backgroundImage} />
+                    <View style={styles.ovalo}></View>
                     <View style={styles.avatarContainer}>
                         <Image source={require('../assets/images/Ícono_foto.png')} style={styles.avatar} />
                         <TouchableOpacity style={styles.editButton}>
@@ -48,27 +49,24 @@ const Profile: React.FC<Props> = ({ navigation }) => {
                         </TouchableOpacity>
                     </View>
                 </View>
-
+                <View style={{width: "90%"}}>
+                <ThemedText style={{alignSelf: "flex-start", marginBottom: 10,}}>Nombre</ThemedText>
                 {/* Campos de Texto */}
                 <View style={styles.inputContainer}>
-                    <ThemedText type="subtitle" style={styles.label}>{t('name')}</ThemedText>
                     <TextInput
-                        value={name}
+                        value= {name}
                         onChangeText={setName}
-                        placeholder={t('enter_name')}
                         placeholderTextColor={colors.gray}
                         style={[styles.input, styles.textInput]}
                     />
                 </View>
+                <ThemedText style={{alignSelf: "flex-start", marginBottom: 10,}}>Email</ThemedText>
                 <View style={styles.inputContainer}>
-                    <ThemedText type="subtitle" style={styles.label}>{t('Email')}</ThemedText>
                     <TextInput
                         value={email}
                         onChangeText={setEmail}
-                        placeholder={t('enter_email')}
                         placeholderTextColor={colors.gray}
                         style={[styles.input, styles.textInput]}
-                        keyboardType="email-address"
                         autoCapitalize="none"
                     />
                 </View>
@@ -76,19 +74,21 @@ const Profile: React.FC<Props> = ({ navigation }) => {
                 {/* Botones */}
                 <View style={styles.buttonContainer}>
                     <LogButton
-                        title={t('change_password')}
+                        title={t('Cambiar contraseña')}
                         buttonColor={colors.azul}
                         textColor="white"
                         sizeText={17}
-                        style={{ width: "100%", marginBottom: 10 }}
+                        style={{ width: "100%", marginBottom: 30 }}
                     />
                     <LogButton
-                        title={t('logout')}
-                        buttonColor={colors.gray}
-                        textColor="white"
+                        title={t('Cerrar Sesión')}
+                        buttonColor={"white"}
+                        textColor= {colors.azul}
                         sizeText={17}
                         style={{ width: "100%" }}
                     />
+                </View>
+                <LogButton mode="text" title={t('Terminos y Condiciones')} textColor="#000000FF" />
                 </View>
 
                 <MicroMenu navigation={navigation} currentScreen="Profile" />
@@ -104,15 +104,26 @@ const styles = StyleSheet.create({
         paddingTop: 50,
         paddingHorizontal: 20,
     },
+    ovalo: {
+        width: "114%",
+        height: 100,
+        borderTopLeftRadius: 50,
+        borderTopRightRadius: 50,
+        backgroundColor: "#fefdfa",
+        position: "absolute",
+        top: 100,
+        zIndex: 0,
+    },
     header: {
         width: "100%",
         alignItems: "center",
         marginBottom: 20,
+        marginTop: 40,
     },
     backgroundImage: {
         position: "absolute",
-        width: "100%",
-        height: 150,
+        width: "115%",
+        height: 220,
         top: 0,
     },
     avatarContainer: {
@@ -120,8 +131,8 @@ const styles = StyleSheet.create({
         marginTop: 50,
     },
     avatar: {
-        width: 100,
-        height: 100,
+        width: 130,
+        height: 130,
         borderRadius: 50,
     },
     editButton: {
@@ -133,40 +144,52 @@ const styles = StyleSheet.create({
         padding: 5,
     },
     editIcon: {
-        width: 20,
-        height: 20,
+        width: 30,
+        height: 30,
     },
     inputContainer: {
-        width: "100%",
-        marginBottom: 20,
-    },
-    label: {
-        marginBottom: 5,
-        fontSize: 16,
-    },
-    input: {
-        width: "100%",
-        height: 50,
-        borderColor: colors.gray,
+        flexDirection: "row",
+        alignItems: "center",
         borderWidth: 1,
+        backgroundColor: colors.blanco,
+        borderColor: '#FFFFFF',
         borderRadius: 5,
         paddingHorizontal: 10,
-        backgroundColor: colors.blanco,
+        marginBottom: 20,
+        width: "100%",
+        height: 50,
+        // Sombra en iOS
         shadowColor: "#000",
         shadowOffset: {
-            width: 0,
-            height: 2,
+          width: 0,
+          height: 2,
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
+    
+        // Sombra en Android
         elevation: 2,
-    },
-    textInput: {
+      },
+      input: {
+        flex: 1,
         fontSize: 16,
+        paddingLeft: 10,
+      },
+      textInput: {
+        fontFamily: 'BalooTamma2_800ExtraBold', // Usa el estilo de "subtitle"
+      },
+    label: {
+        marginBottom: 5,
+        fontSize: 16,
+        marginLeft: 10,
     },
     buttonContainer: {
         width: "100%",
         marginBottom: 20,
+        justifyContent: "center",
+        alignContent: "center",
+        alignItems: "center",
+        marginTop: 20,
     },
     footer: {
         width: "100%",
