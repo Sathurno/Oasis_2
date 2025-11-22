@@ -24,9 +24,9 @@ const MicroMenu: React.FC<Props> = ({ navigation, currentScreen }) => {
         }, [currentScreen])
     );
 
-    const handleIconPress = (iconName: string) => {
+    const handleIconPress = (iconName: keyof RootStackParamList) => {
         setSelectedIcon(iconName); // Cambiar el icono seleccionado
-        navigation.navigate(iconName as keyof RootStackParamList);
+        navigation.navigate(iconName);
     };
 
     return (

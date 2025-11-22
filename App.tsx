@@ -21,6 +21,7 @@ import Search from './tabs/Search';
 import Profile from './tabs/Profile';
 import Result from './tabs/Result';
 import StartPage from './tabs/StartPage';
+import Notifications from './tabs/Notifications';
 
 // Mantener la pantalla de carga visible mientras se cargan los recursos
 SplashScreen.preventAutoHideAsync().catch(console.warn);
@@ -67,6 +68,7 @@ const App = () => {
           <Stack.Screen name="Search" component={Search} options={{ headerShown: false }} />
           <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
           <Stack.Screen name="Result" component={Result} options={{ headerShown: false }} />
+          <Stack.Screen name="Notifications" component={Notifications} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>
