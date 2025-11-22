@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, Alert } from 'react-native';
+import React, { useRef, useEffect } from 'react';
+import { StyleSheet, View, Text, Image, TouchableOpacity, Alert, Animated } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import colors from '../constants/Colors'; // Asegúrate de importar tus colores
 
@@ -14,6 +14,76 @@ interface BatteryInfoProps {
 
 const BatteryInfo: React.FC<BatteryInfoProps> = ({ totalRemaining, accumulatedCost, startTime, onNext, onPrev, isLocker = false }) => {
     const { t } = useTranslation(); // Traducción
+    
+    // Valores animados para la posición y opacidad
+    const slideAnim = useRef(new Animated.Value(0)).current;
+    const opacityAnim = useRef(new Animated.Value(1)).current;
+    
+    // Referencia para rastrear la dirección del cambio
+    const directionRef = useRef<'next' | 'prev'>('next');
+    const prevPropsRef = useRef({ totalRemaining, accumulatedCost, startTime });
+    const isFirstRender = useRef(true);
+
+    // Detectar cambios en las props para animar
+    useEffect(() => {
+        // Evitar animación en el primer render
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+            prevPropsRef.current = { totalRemaining, accumulatedCost, startTime };
+            return;
+        }
+
+        const hasChanged = 
+            prevPropsRef.current.totalRemaining !== totalRemaining ||
+            prevPropsRef.current.accumulatedCost !== accumulatedCost ||
+            prevPropsRef.current.startTime !== startTime;
+
+        if (hasChanged) {
+            // Animación de salida: mover en dirección contraria y desaparecer
+            Animated.parallel([
+                Animated.timing(slideAnim, {
+                    toValue: directionRef.current === 'next' ? -300 : 300,
+                    duration: 300,
+                    useNativeDriver: true,
+                }),
+                Animated.timing(opacityAnim, {
+                    toValue: 0,
+                    duration: 300,
+                    useNativeDriver: true,
+                }),
+            ]).start(() => {
+                // Resetear posición y opacidad para la nueva batería
+                slideAnim.setValue(directionRef.current === 'next' ? 300 : -300);
+                opacityAnim.setValue(0);
+                
+                // Animación de entrada: aparecer desde la dirección del scroll
+                Animated.parallel([
+                    Animated.timing(slideAnim, {
+                        toValue: 0,
+                        duration: 300,
+                        useNativeDriver: true,
+                    }),
+                    Animated.timing(opacityAnim, {
+                        toValue: 1,
+                        duration: 300,
+                        useNativeDriver: true,
+                    }),
+                ]).start();
+            });
+        }
+
+        prevPropsRef.current = { totalRemaining, accumulatedCost, startTime };
+    }, [totalRemaining, accumulatedCost, startTime]);
+
+    const handleNext = () => {
+        directionRef.current = 'next';
+        onNext();
+    };
+
+    const handlePrev = () => {
+        directionRef.current = 'prev';
+        onPrev();
+    };
 
     return (
         <View>
@@ -34,16 +104,26 @@ const BatteryInfo: React.FC<BatteryInfoProps> = ({ totalRemaining, accumulatedCo
 
             {/* Imagen y botón */}
             <View style={styles.batteryImageContainer}>
-                <TouchableOpacity onPress={onPrev} style={{ zIndex: 10 }}>
+                <TouchableOpacity onPress={handlePrev} style={{ zIndex: 10 }}>
                     <Image source={require('../assets/images/Ícono_arrow_delgada.png')} style={styles.arrowReverse}></Image>
                 </TouchableOpacity>
                 
-                <Image 
-                    source={isLocker ? require('../assets/images/casilleros.png') : require('../assets/images/battery_low.png')} 
-                    style={isLocker ? styles.lockerImage : styles.batteryImage} 
-                />
+                <Animated.View
+                    style={[
+                        styles.animatedContainer,
+                        {
+                            transform: [{ translateX: slideAnim }],
+                            opacity: opacityAnim,
+                        },
+                    ]}
+                >
+                    <Image 
+                        source={isLocker ? require('../assets/images/casilleros.png') : require('../assets/images/battery_low.png')} 
+                        style={isLocker ? styles.lockerImage : styles.batteryImage} 
+                    />
+                </Animated.View>
                 
-                <TouchableOpacity onPress={onNext} style={{ zIndex: 10 }}>
+                <TouchableOpacity onPress={handleNext} style={{ zIndex: 10 }}>
                     <Image source={require('../assets/images/Ícono_arrow_delgada.png')} style={styles.arrow}></Image>
                 </TouchableOpacity>
             </View>
@@ -93,6 +173,9 @@ const styles = StyleSheet.create({
         width: 280,
         height: 120,
         resizeMode: 'contain',
+    },
+    animatedContainer: {
+        overflow: 'hidden',
     },
 });
 

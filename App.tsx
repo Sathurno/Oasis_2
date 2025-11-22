@@ -4,7 +4,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useFonts, BalooTamma2_400Regular, BalooTamma2_800ExtraBold } from '@expo-google-fonts/baloo-tamma-2';
 import * as SplashScreen from 'expo-splash-screen';
-import { View } from 'react-native';
+import { View, LogBox } from 'react-native';
+
+// Deshabilitar todas las alertas de error y warnings en desarrollo
+if (__DEV__) {
+  LogBox.ignoreAllLogs(true);
+}
 
 import './i18n'; // Importar configuración de i18n
 import Login from './tabs/Login';
@@ -19,6 +24,17 @@ import StartPage from './tabs/StartPage';
 
 // Mantener la pantalla de carga visible mientras se cargan los recursos
 SplashScreen.preventAutoHideAsync().catch(console.warn);
+
+// Deshabilitar alertas de error y dismiss en Android
+if (__DEV__) {
+  // Deshabilitar el handler global de errores que muestra alertas
+  const originalErrorHandler = ErrorUtils.getGlobalHandler();
+  ErrorUtils.setGlobalHandler((error, isFatal) => {
+    // Solo loguear el error sin mostrar alerta
+    console.error('Error:', error, 'isFatal:', isFatal);
+    // No llamar al handler original para evitar alertas
+  });
+}
 
 const Stack = createStackNavigator();
 

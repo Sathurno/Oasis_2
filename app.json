@@ -12,6 +12,10 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/Icono_apple.png",
         "backgroundColor": "#ffffff"
+      },
+      "notification": {
+        "icon": "./assets/images/Icono_apple.png",
+        "color": "#ffffff"
       }
     },
     "web": {
