@@ -6,6 +6,7 @@ import colors from "../constants/Colors";
 import { ThemedText } from "../components/ThemedText";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types';
+import MicroMenu from '../components/MicroMenu';
 
 type NotificationsPageNavigationProp = StackNavigationProp<RootStackParamList, 'Notifications'>;
 
@@ -82,18 +83,7 @@ const Notifications: React.FC<Props> = ({ navigation }) => {
                     contentContainerStyle={styles.notificationsList}
                 />
 
-                {/* Navegación Inferior */}
-                <View style={styles.footer}>
-                    <TouchableOpacity style={styles.footerIcon}>
-                        <Image source={require('../assets/images/home_icon.png')} style={styles.icon} />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.footerIcon}>
-                        <Image source={require('../assets/images/search_icon.png')} style={styles.icon} />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.footerIcon}>
-                        <Image source={require('../assets/images/notifications_icon.png')} style={styles.icon} />
-                    </TouchableOpacity>
-                </View>
+                <MicroMenu navigation={navigation} currentScreen='Notifications' />
             </View>
         </ScrollView>
     );
@@ -166,24 +156,8 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: colors.negro,
     },
-    footer: {
-        width: "100%",
-        flexDirection: "row",
-        justifyContent: "space-around",
-        paddingVertical: 20,
-        borderTopWidth: 1,
-        borderColor: colors.gray,
-        backgroundColor: colors.blanco,
-    },
-    footerIcon: {
-        alignItems: "center",
-    },
-    icon: {
-        width: 30,
-        height: 30,
-    },
     notificationsList: {
-        paddingBottom: 80, // Para evitar que el contenido se esconda detrás del footer
+        paddingBottom: 120, // Aumentado para dejar espacio al MicroMenu
     },
 });
 

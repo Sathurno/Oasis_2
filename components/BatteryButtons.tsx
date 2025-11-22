@@ -34,6 +34,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ returnButtonText, onRetur
                 title={t('More Information')}
                 textColor="#4461F2"
                 sizeText={12}
+                onPress={() => Alert.alert("Información", "Detalles de la batería...")}
             />
         </View>
     );

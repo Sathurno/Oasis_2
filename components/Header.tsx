@@ -78,29 +78,28 @@ const styles = StyleSheet.create({
 
     header: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'space-between', // Distribuye los elementos a los extremos
         alignItems: 'center',
-        marginBottom: 50,
-        marginTop: 20,
-        width: '28%',
+        marginBottom: 20,
+        marginTop: 40, // Un poco más de espacio superior para la barra de estado
+        width: '100%', // Ocupar todo el ancho disponible
+        paddingHorizontal: 10, // Añadir padding lateral para que no pegue a los bordes
     },
     userInfo: {
         flexDirection: 'column',
         alignItems: 'center',
+        flex: 1, // Permite que este contenedor ocupe el espacio central
     },
     avatar: {
         width: 60,
         height: 60,
         borderRadius: 20,
-        marginRight: 3,
-        marginTop: 10,
-        zIndex: 1,
-    },scanning: {
+        // Eliminado marginRight y marginTop fijos innecesarios
+    },
+    scanning: {
         width: 35,
         height: 35,
-        marginTop: 10,
-        marginLeft: 145,
-        zIndex: 1,
+        // Eliminado marginLeft: 145 y marginTop
     },
     ellipse: {
         width: 20,
@@ -121,7 +120,7 @@ const styles = StyleSheet.create({
 
     },
     dropdownText: {
-        fontFamily: 'BalooTamma2_800',
+        fontFamily: 'BalooTamma2_800ExtraBold',
         color: 'black',
     },
     dropdownContainerWrapper: {

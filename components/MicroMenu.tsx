@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import colors from '../constants/Colors';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -11,6 +11,8 @@ interface Props {
     navigation: HomePageNavigationProp;
     currentScreen: string;  // Nuevo prop para recibir la pantalla actual
 }
+
+const { width } = Dimensions.get('window');
 
 const MicroMenu: React.FC<Props> = ({ navigation, currentScreen }) => {
     const [selectedIcon, setSelectedIcon] = useState<string>('home');
@@ -89,11 +91,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        width: '100%',
+        width: width, // Usar el ancho total de la pantalla
         height: 100,
-        marginTop: 740,
-        marginLeft: 20,
-        position: 'absolute',
+        bottom: 20, // Posición fija desde abajo
+        position: 'absolute', // Flotante sobre el contenido
+        zIndex: 10, // Asegurar que esté por encima de otros elementos
+        alignSelf: 'center', // Centrar respecto al contenedor padre
     },
     rectangle: {
         width: "90%",

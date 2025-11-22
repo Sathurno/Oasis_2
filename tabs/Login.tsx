@@ -86,6 +86,7 @@ const Login: React.FC<Props> = ({ navigation }) => {
             textColor="white"
             sizeText={17}
             style={{ width: "100%" }} // Hace que el botón ocupe todo el ancho del contenedor
+            onPress={() => navigation.navigate('Home')}
           />
         </View>
         <ThemedText type="subtitle" style={styles.or}>{t('or_continue_with')}</ThemedText>

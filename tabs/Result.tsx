@@ -57,7 +57,13 @@ const Result: React.FC<Props> = ({ navigation }) => {
                 <Image source={require('../assets/images/Ícono_ciclismo.png')} style={styles.icono1} />
                 <Image source={require('../assets/images/Ícono_caminata.png')} style={styles.icono2} />
                 <View style={styles.googleMaps}>
-                    <LogButton mode="text" title={t('Ver en Google Maps')} textColor="#4461F2" sizeText={12}/>
+                    <LogButton 
+                        mode="text" 
+                        title={t('Ver en Google Maps')} 
+                        textColor="#4461F2" 
+                        sizeText={12}
+                        onPress={() => alert("Abriendo Google Maps...")}
+                    />
                     <Image source={require('../assets/images/Ícono_googleMaps.png')} style={styles.maps} />
                 </View>
             </View>

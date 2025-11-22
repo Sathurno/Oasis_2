@@ -21,10 +21,46 @@ interface Props {
 const Home: React.FC<Props> = ({ navigation }) => {
     const { t } = useTranslation();
     const [hasBattery, setHasBattery] = useState(true); // Estado para controlar si tiene batería alquilada
+    const [currentBatteryIndex, setCurrentBatteryIndex] = useState(0);
+
+    // Datos simulados de las baterías
+    const batteries = [
+        {
+            id: '1JKL5',
+            name: 'Batería 1JKL5',
+            totalRemaining: '60%',
+            accumulatedCost: '5,45€',
+            startTime: '10/05/2024 15h30'
+        },
+        {
+            id: '2MNO9',
+            name: 'Batería 2MNO9',
+            totalRemaining: '85%',
+            accumulatedCost: '2,10€',
+            startTime: '10/05/2024 16h15'
+        },
+        {
+            id: '3PQR7',
+            name: 'Batería 3PQR7',
+            totalRemaining: '30%',
+            accumulatedCost: '8,90€',
+            startTime: '10/05/2024 12h00'
+        }
+    ];
 
     const handleReturnConfirmation = () => {
         setHasBattery(false); // Oculta la sección de la batería
     };
+
+    const handleNextBattery = () => {
+        setCurrentBatteryIndex((prevIndex) => (prevIndex + 1) % batteries.length);
+    };
+
+    const handlePrevBattery = () => {
+        setCurrentBatteryIndex((prevIndex) => (prevIndex - 1 + batteries.length) % batteries.length);
+    };
+
+    const currentBattery = batteries[currentBatteryIndex];
 
     return (
         <ScrollView>
@@ -36,11 +72,13 @@ const Home: React.FC<Props> = ({ navigation }) => {
                 {hasBattery ? (
                     <>
                         {/* Información de la batería */}
-                        <ThemedText type="subtitle" style={styles.batteryName}>Batería 1JKL5</ThemedText>
+                        <ThemedText type="subtitle" style={styles.batteryName}>{currentBattery.name}</ThemedText>
                         <BatteryInfo
-                            totalRemaining="60%"
-                            accumulatedCost="5,45€"
-                            startTime="10/05/2024 15h30"
+                            totalRemaining={currentBattery.totalRemaining}
+                            accumulatedCost={currentBattery.accumulatedCost}
+                            startTime={currentBattery.startTime}
+                            onNext={handleNextBattery}
+                            onPrev={handlePrevBattery}
                         />
                         <BatteryButtons returnButtonText='Devolver' onReturnConfirm={handleReturnConfirmation} />
                     </>

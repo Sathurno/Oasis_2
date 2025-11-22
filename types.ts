@@ -7,4 +7,6 @@ export type RootStackParamList = {
   Search: undefined;
   Profile: undefined;
   Result: undefined;
+  Notifications: undefined;
+  StartPage: undefined;
 };

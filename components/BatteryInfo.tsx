@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, Alert } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import colors from '../constants/Colors'; // Asegúrate de importar tus colores
 
@@ -7,9 +7,11 @@ interface BatteryInfoProps {
     totalRemaining: string; // Porcentaje de batería restante
     accumulatedCost: string; // Coste acumulado
     startTime: string; // Fecha y hora de inicio
+    onNext: () => void;
+    onPrev: () => void;
 }
 
-const BatteryInfo: React.FC<BatteryInfoProps> = ({ totalRemaining, accumulatedCost, startTime }) => {
+const BatteryInfo: React.FC<BatteryInfoProps> = ({ totalRemaining, accumulatedCost, startTime, onNext, onPrev }) => {
     const { t } = useTranslation(); // Traducción
 
     return (
@@ -31,9 +33,15 @@ const BatteryInfo: React.FC<BatteryInfoProps> = ({ totalRemaining, accumulatedCo
 
             {/* Imagen y botón */}
             <View style={styles.batteryImageContainer}>
-                <Image source={require('../assets/images/Ícono_arrow_delgada.png')} style={styles.arrowReverse}></Image>
+                <TouchableOpacity onPress={onPrev} style={{ zIndex: 10 }}>
+                    <Image source={require('../assets/images/Ícono_arrow_delgada.png')} style={styles.arrowReverse}></Image>
+                </TouchableOpacity>
+                
                 <Image source={require('../assets/images/battery_low.png')} style={styles.batteryImage} />
-                <Image source={require('../assets/images/Ícono_arrow_delgada.png')} style={styles.arrow}></Image>
+                
+                <TouchableOpacity onPress={onNext} style={{ zIndex: 10 }}>
+                    <Image source={require('../assets/images/Ícono_arrow_delgada.png')} style={styles.arrow}></Image>
+                </TouchableOpacity>
             </View>
         </View>
     );

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Image, StyleSheet, View, TouchableOpacity } from "react-native";
 import { useTranslation } from 'react-i18next';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../types';
 import ScrollView from "../components/ScrollView";
 import LogButton from "../components/LogButton";
 import colors from "../constants/Colors";
@@ -8,7 +10,13 @@ import { ThemedText } from "../components/ThemedText";
 import DropDownPicker from 'react-native-dropdown-picker';
 import i18next from "../i18n";
 
-export default function StartPage() {
+type StartPageNavigationProp = StackNavigationProp<RootStackParamList, 'StartPage'>;
+
+interface Props {
+  navigation: StartPageNavigationProp;
+}
+
+export default function StartPage({ navigation }: Props) {
   const { t, i18n } = useTranslation(); // Accede a i18n
   const [languageOpen, setLanguageOpen] = useState<boolean>(false);
   const [languageValue, setLanguageValue] = useState<string | null>(i18n.language);
@@ -55,11 +63,26 @@ export default function StartPage() {
           <Image style={styles.gif} source={require("../assets/earth.gif")} />
         </View>
         <View style={styles.subcontainer}>
-          <LogButton title={t('login')} buttonColor={colors.azul} textColor="white" />
+          <LogButton 
+            title={t('login')} 
+            buttonColor={colors.azul} 
+            textColor="white" 
+            onPress={() => navigation.navigate('Login')}
+          />
           <View style={styles.space} />
-          <LogButton title={t('register')} buttonColor={colors.blanco} textColor="black" />
+          <LogButton 
+            title={t('register')} 
+            buttonColor={colors.blanco} 
+            textColor="black" 
+            onPress={() => navigation.navigate('Register')}
+          />
         </View>
-        <LogButton mode="text" title={t('skip')} textColor="#4461F2" />
+        <LogButton 
+          mode="text" 
+          title={t('skip')} 
+          textColor="#4461F2" 
+          onPress={() => navigation.navigate('Home')}
+        />
       </View>
     </ScrollView>
   );
