@@ -39,9 +39,7 @@ export default function StartPage({ navigation }: Props) {
       <View style={styles.container}>
         <View style={styles.encabezado}>
         <ThemedText type="subtitle" style={styles.versionText}>Versión 1.0</ThemedText>
-          <TouchableOpacity onPress={() => setLanguageOpen(!languageOpen)}>
-            <ThemedText type="subtitle">{t('language')}</ThemedText>
-          </TouchableOpacity>
+        <TouchableOpacity  onPress={() => setLanguageOpen(!languageOpen)}></TouchableOpacity>
           <DropDownPicker
             open={languageOpen}
             value={languageValue}
@@ -102,7 +100,11 @@ const styles = StyleSheet.create({
   encabezado: {
     flexDirection: "row",
     marginBottom: 100,
+    alignItems: "center",
   },
+  TouchableOpacity: {
+    marginTop: 30,
+   },
   space: {
     width: 10,
   },
@@ -129,8 +131,7 @@ const styles = StyleSheet.create({
     fontFamily: 'BalooTamma2_800ExtraBold',
     color: 'black', // Text color
     textAlign: 'right', // Alinea el texto a la izquierda
-    
-    
+    fontSize: 16, 
   },
   dropdownContainerWrapper: {
     width: '100%', // Asegura que el contenedor ocupe el 100% del ancho disponible
