@@ -24,9 +24,9 @@ const MicroMenu: React.FC<Props> = ({ navigation, currentScreen }) => {
         }, [currentScreen])
     );
 
-    const handleIconPress = (iconName: string) => {
+    const handleIconPress = (iconName: keyof RootStackParamList) => {
         setSelectedIcon(iconName); // Cambiar el icono seleccionado
-        navigation.navigate(iconName as keyof RootStackParamList);
+        navigation.navigate(iconName);
     };
 
     return (
@@ -59,11 +59,7 @@ const MicroMenu: React.FC<Props> = ({ navigation, currentScreen }) => {
 
                     <TouchableOpacity onPress={() => handleIconPress('Notifications')} style={{ alignItems: 'center' }}>
                         <Image
-                            source={
-                                selectedIcon === 'Notifications'
-                                    ? require('../assets/images/Ícono_notificación_negrita.png') // Icono en negrita
-                                    : require('../assets/images/Ícono_notificación.png') // Icono regular
-                            }
+                            source={require('../assets/images/Ícono_scanning.png')}
                             style={styles.menuIcons}
                         />
                         {selectedIcon === 'Notifications' && <View style={styles.blueCircle} />}
