@@ -20,11 +20,12 @@ interface Props {
 
 const Home: React.FC<Props> = ({ navigation }) => {
     const { t } = useTranslation();
-    const [hasBattery, setHasBattery] = useState(true); // Estado para controlar si tiene batería alquilada
     const [currentBatteryIndex, setCurrentBatteryIndex] = useState(0);
+    const [currentLockerIndex, setCurrentLockerIndex] = useState(0);
+    const [isLocker, setIsLocker] = useState(false); // Estado para controlar la vista (Baterías o Taquillas)
 
     // Datos simulados de las baterías
-    const batteries = [
+    const [batteries, setBatteries] = useState([
         {
             id: '1JKL5',
             name: 'Batería 1JKL5',
@@ -46,10 +47,57 @@ const Home: React.FC<Props> = ({ navigation }) => {
             accumulatedCost: '8,90€',
             startTime: '10/05/2024 12h00'
         }
-    ];
+    ]);
 
-    const handleReturnConfirmation = () => {
-        setHasBattery(false); // Oculta la sección de la batería
+    // Datos simulados de las taquillas
+    const [lockers, setLockers] = useState([
+        {
+            id: 'T001',
+            name: 'Taquilla T001',
+            location: 'Estación Central',
+            accumulatedCost: '3,20€',
+            startTime: '10/05/2024 14h00'
+        },
+        {
+            id: 'T045',
+            name: 'Taquilla T045',
+            location: 'Plaza Mayor',
+            accumulatedCost: '1,80€',
+            startTime: '10/05/2024 16h30'
+        },
+        {
+            id: 'T089',
+            name: 'Taquilla T089',
+            location: 'Centro Comercial',
+            accumulatedCost: '4,50€',
+            startTime: '10/05/2024 11h15'
+        }
+    ]);
+
+    const handleBatteryReturnConfirmation = () => {
+        // Eliminar la batería actual del array
+        const newBatteries = batteries.filter((_, index) => index !== currentBatteryIndex);
+        setBatteries(newBatteries);
+        
+        // Ajustar el índice si es necesario
+        if (currentBatteryIndex >= newBatteries.length && newBatteries.length > 0) {
+            setCurrentBatteryIndex(newBatteries.length - 1);
+        } else if (newBatteries.length === 0) {
+            setCurrentBatteryIndex(0);
+        }
+    };
+
+    const handleLockerReturnConfirmation = () => {
+        // Eliminar la taquilla actual del array
+        const newLockers = lockers.filter((_, index) => index !== currentLockerIndex);
+        setLockers(newLockers);
+        
+        // Ajustar el índice si es necesario
+        if (currentLockerIndex >= newLockers.length && newLockers.length > 0) {
+            setCurrentLockerIndex(newLockers.length - 1);
+        } else if (newLockers.length === 0) {
+            setCurrentLockerIndex(0);
+        }
     };
 
     const handleNextBattery = () => {
@@ -60,38 +108,76 @@ const Home: React.FC<Props> = ({ navigation }) => {
         setCurrentBatteryIndex((prevIndex) => (prevIndex - 1 + batteries.length) % batteries.length);
     };
 
+    const handleNextLocker = () => {
+        setCurrentLockerIndex((prevIndex) => (prevIndex + 1) % lockers.length);
+    };
+
+    const handlePrevLocker = () => {
+        setCurrentLockerIndex((prevIndex) => (prevIndex - 1 + lockers.length) % lockers.length);
+    };
+
     const currentBattery = batteries[currentBatteryIndex];
+    const currentLocker = lockers[currentLockerIndex];
 
     return (
         <ScrollView>
             <View style={styles.container}>
                 {/* Encabezado */}
                 <Header navigation={navigation} />
-                <HeaderSection isLocker={false} />
+                <HeaderSection isLocker={isLocker} onSwitch={() => setIsLocker(!isLocker)} />
 
-                {hasBattery ? (
-                    <>
-                        {/* Información de la batería */}
-                        <ThemedText type="subtitle" style={styles.batteryName}>{currentBattery.name}</ThemedText>
-                        <BatteryInfo
-                            totalRemaining={currentBattery.totalRemaining}
-                            accumulatedCost={currentBattery.accumulatedCost}
-                            startTime={currentBattery.startTime}
-                            onNext={handleNextBattery}
-                            onPrev={handlePrevBattery}
-                        />
-                        <BatteryButtons returnButtonText='Devolver' onReturnConfirm={handleReturnConfirmation} />
-                    </>
-                ) : (<>
-                    <ThemedText type="subtitle" style={styles.noBatteryText}>
-                        No tienes ninguna batería alquilada.
-                    </ThemedText>
-                    <TouchableOpacity style={styles.container2} onPress={() => navigation.navigate('Search')}>
-                        <ThemedText style={styles.registerLink} type="subtitle" sizeText={18}>
-                            {t('Serach for a battery')}
+                {isLocker ? (
+                    // Vista de Taquillas
+                    lockers.length > 0 ? (
+                        <>
+                            <ThemedText type="subtitle" style={styles.lockerName}>{lockers[currentLockerIndex].name}</ThemedText>
+                            <BatteryInfo
+                                totalRemaining={lockers[currentLockerIndex].location}
+                                accumulatedCost={lockers[currentLockerIndex].accumulatedCost}
+                                startTime={lockers[currentLockerIndex].startTime}
+                                onNext={handleNextLocker}
+                                onPrev={handlePrevLocker}
+                                isLocker={true}
+                            />
+                            <BatteryButtons returnButtonText='Devolver' onReturnConfirm={handleLockerReturnConfirmation} />
+                        </>
+                    ) : (
+                        <>
+                            <ThemedText type="subtitle" style={styles.noBatteryText}>
+                                No tienes ninguna taquilla alquilada.
+                            </ThemedText>
+                            <TouchableOpacity style={styles.container2} onPress={() => navigation.navigate('Search')}>
+                                <ThemedText style={styles.registerLink} type="subtitle" sizeText={18}>
+                                    {t('Serach for a battery')}
+                                </ThemedText>
+                            </TouchableOpacity>
+                        </>
+                    )
+                ) : (
+                    // Vista de Baterías Portátiles
+                    batteries.length > 0 ? (
+                        <>
+                            {/* Información de la batería */}
+                            <ThemedText type="subtitle" style={styles.batteryName}>{batteries[currentBatteryIndex].name}</ThemedText>
+                            <BatteryInfo
+                                totalRemaining={batteries[currentBatteryIndex].totalRemaining}
+                                accumulatedCost={batteries[currentBatteryIndex].accumulatedCost}
+                                startTime={batteries[currentBatteryIndex].startTime}
+                                onNext={handleNextBattery}
+                                onPrev={handlePrevBattery}
+                            />
+                            <BatteryButtons returnButtonText='Devolver' onReturnConfirm={handleBatteryReturnConfirmation} />
+                        </>
+                    ) : (<>
+                        <ThemedText type="subtitle" style={styles.noBatteryText}>
+                            No tienes ninguna batería alquilada.
                         </ThemedText>
-                    </TouchableOpacity>
-                </>
+                        <TouchableOpacity style={styles.container2} onPress={() => navigation.navigate('Search')}>
+                            <ThemedText style={styles.registerLink} type="subtitle" sizeText={18}>
+                                {t('Serach for a battery')}
+                            </ThemedText>
+                        </TouchableOpacity>
+                    </>)
                 )}
 
                 <MicroMenu navigation={navigation} currentScreen='Home' />
@@ -111,14 +197,20 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginBottom: 20,
     },
+    lockerName: {
+        fontSize: 18,
+        textAlign: 'center',
+        marginBottom: 20,
+    },
     noBatteryText: {
         fontSize: 18,
         textAlign: 'center',
         marginTop: 50,
         color: 'gray',
-    }, container2: {
-        width: 200, // Ajusta el ancho según sea necesario
-        alignItems: 'center', // Centra el contenido horizontalmente
+    }, 
+    container2: {
+        width: 200,
+        alignItems: 'center',
     },
     registerLink: {
         color: colors.azul,

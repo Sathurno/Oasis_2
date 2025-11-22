@@ -28,14 +28,6 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ returnButtonText, onRetur
             <TouchableOpacity style={styles.returnButton} onPress={handleReturnPress}>
                 <Text style={styles.returnButtonText}>{returnButtonText}</Text>
             </TouchableOpacity>
-
-            <LogButton
-                mode="text"
-                title={t('More Information')}
-                textColor="#4461F2"
-                sizeText={12}
-                onPress={() => Alert.alert("Información", "Detalles de la batería...")}
-            />
         </View>
     );
 };

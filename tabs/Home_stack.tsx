@@ -26,7 +26,7 @@ const Home_stack: React.FC<Props> = ({ navigation, tipo }) => {
             <View style={styles.container}>
                 {/* Encabezado */}
                 <Header navigation={navigation} />
-                <HeaderSection isLocker={tipo} />
+                <HeaderSection isLocker={tipo} onSwitch={() => { }} />
 
                 {/* Información de la batería */}
                 <ThemedText type="subtitle" style={styles.subtitle}>

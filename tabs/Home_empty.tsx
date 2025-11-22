@@ -41,7 +41,7 @@ const Home_empty: React.FC<Props> = ({ navigation, tipo }) => {
             <View style={styles.container}>
                 {/* Encabezado */}
                 <Header navigation={navigation} />
-                <HeaderSection isLocker={tipo} ></HeaderSection>
+                <HeaderSection isLocker={tipo} onSwitch={() => { }} ></HeaderSection>
                 {/* Información de la batería */}
                 <ThemedText type="subtitle" style={styles.subtitle}>No tienes ninguna batería aun</ThemedText>
                 <Image style={styles.gif} source={require("../assets/relaxTime.gif")} />

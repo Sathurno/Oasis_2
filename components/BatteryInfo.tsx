@@ -4,21 +4,22 @@ import { useTranslation } from 'react-i18next';
 import colors from '../constants/Colors'; // Asegúrate de importar tus colores
 
 interface BatteryInfoProps {
-    totalRemaining: string; // Porcentaje de batería restante
+    totalRemaining: string; // Porcentaje de batería restante o ubicación
     accumulatedCost: string; // Coste acumulado
     startTime: string; // Fecha y hora de inicio
     onNext: () => void;
     onPrev: () => void;
+    isLocker?: boolean; // Indica si es una taquilla
 }
 
-const BatteryInfo: React.FC<BatteryInfoProps> = ({ totalRemaining, accumulatedCost, startTime, onNext, onPrev }) => {
+const BatteryInfo: React.FC<BatteryInfoProps> = ({ totalRemaining, accumulatedCost, startTime, onNext, onPrev, isLocker = false }) => {
     const { t } = useTranslation(); // Traducción
 
     return (
         <View>
             <View style={styles.batteryInfoContainer}>
                 <Text style={styles.batteryInfoText}>
-                    <Text style={styles.batteryTitle}>{t('Total restante')}: </Text>
+                    <Text style={styles.batteryTitle}>{isLocker ? t('Ubicación') : t('Total restante')}: </Text>
                     {totalRemaining}
                 </Text>
                 <Text style={styles.batteryInfoText}>
@@ -37,7 +38,10 @@ const BatteryInfo: React.FC<BatteryInfoProps> = ({ totalRemaining, accumulatedCo
                     <Image source={require('../assets/images/Ícono_arrow_delgada.png')} style={styles.arrowReverse}></Image>
                 </TouchableOpacity>
                 
-                <Image source={require('../assets/images/battery_low.png')} style={styles.batteryImage} />
+                <Image 
+                    source={isLocker ? require('../assets/images/casilleros.png') : require('../assets/images/battery_low.png')} 
+                    style={isLocker ? styles.lockerImage : styles.batteryImage} 
+                />
                 
                 <TouchableOpacity onPress={onNext} style={{ zIndex: 10 }}>
                     <Image source={require('../assets/images/Ícono_arrow_delgada.png')} style={styles.arrow}></Image>
@@ -84,6 +88,11 @@ const styles = StyleSheet.create({
         height: 160,
         marginRight: -90,
         marginLeft: -90,
+    },
+    lockerImage: {
+        width: 280,
+        height: 120,
+        resizeMode: 'contain',
     },
 });
 

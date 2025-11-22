@@ -1,14 +1,15 @@
 import React from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { ThemedText } from '../components/ThemedText';
 import colors from '../constants/Colors';
 
 interface HeaderSectionProps {
     isLocker: boolean; // Recibe la propiedad `isLocker`
+    onSwitch: () => void; // Función para cambiar entre modos
 }
 
-const HeaderSection: React.FC<HeaderSectionProps> = ({ isLocker }) => {
+const HeaderSection: React.FC<HeaderSectionProps> = ({ isLocker, onSwitch }) => {
     const { t } = useTranslation();
 
     return (
@@ -18,7 +19,7 @@ const HeaderSection: React.FC<HeaderSectionProps> = ({ isLocker }) => {
                     {isLocker ? t('Taquillas') : t('Baterías Portátiles')}
                 </ThemedText>
 
-                <View style={styles.iconContainer}>
+                <TouchableOpacity onPress={onSwitch} style={styles.iconContainer}>
                     <Image
                         source={require('../assets/images/Ícono_arrow-black-bottom.png')}
                         style={[
@@ -33,7 +34,7 @@ const HeaderSection: React.FC<HeaderSectionProps> = ({ isLocker }) => {
                             isLocker && { opacity: 0.3 }, // Opacidad inversa para "Taquillas"
                         ]}
                     />
-                </View>
+                </TouchableOpacity>
             </View>
         </View>
     );
