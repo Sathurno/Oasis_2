@@ -1,24 +1,27 @@
 import React from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, Text } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import ScrollView from '../components/ScrollView';
+import { useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types';
 import { ThemedText } from "../components/ThemedText";
 import Header from '../components/Header';
 import MicroMenu from '../components/MicroMenu';
-import BatteryButtons from '../components/BatteryButtons';
 import BatteryInfo from '../components/BatteryInfo';
 import HeaderSection from '../components/HeaderSection';
+import colors from '../constants/Colors';
 
-type HomePageNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+type HomeStackNavigationProp = StackNavigationProp<RootStackParamList, 'Home_stack'>;
 
 interface Props {
-    navigation: HomePageNavigationProp;
-    tipo: boolean;
+    navigation: HomeStackNavigationProp;
 }
 
-const Home_stack: React.FC<Props> = ({ navigation, tipo }) => {
+const Home_stack: React.FC<Props> = ({ navigation }) => {
+    const route = useRoute();
+    const routeParams = (route.params as { tipo?: boolean }) || {};
+    const tipo = routeParams?.tipo ?? false;
     const { t } = useTranslation();
 
     return (
@@ -51,7 +54,14 @@ const Home_stack: React.FC<Props> = ({ navigation, tipo }) => {
                     )}
                 </View>
 
-                <BatteryButtons returnButtonText='Devolver' />
+                {/* Botón Continuar */}
+                <TouchableOpacity 
+                    style={styles.continuarButton} 
+                    onPress={() => navigation.navigate('Home')}
+                >
+                    <Text style={styles.continuarButtonText}>Continuar</Text>
+                </TouchableOpacity>
+                
                 <MicroMenu navigation={navigation} currentScreen='Home_stack' />
             </View>
         </ScrollView>
@@ -82,8 +92,22 @@ const styles = StyleSheet.create({
     },
     lowerImage: {
         marginTop: 20, // Desplaza las imágenes centrales hacia abajo
-
-    }
+    },
+    continuarButton: {
+        backgroundColor: colors.azul,
+        paddingVertical: 15,
+        paddingHorizontal: 30,
+        borderRadius: 10,
+        height: 50,
+        width: 130,
+        alignSelf: 'center',
+        marginTop: 20,
+    },
+    continuarButtonText: {
+        color: colors.blanco,
+        fontSize: 16,
+        textAlign: 'center',
+    },
 });
 
 export default Home_stack;

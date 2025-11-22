@@ -80,11 +80,31 @@ const Search: React.FC<Props> = ({ navigation }) => {
         setSearchStarted(true);
     
         const cities = ['Valencia', 'Madrid', 'Barcelona', 'Sevilla', 'Zaragoza'];
-        const filteredSuggestions = cities.map(city => `${text} del Río 34, ${city}, España`);
+        // Variantes de lugares
+        const placeVariants = ['del Río', 'de la Plaza', 'del Parque', 'de la Avenida'];
+        
+        // Generar números aleatorios para cada dirección (máximo 2 dígitos: 1-99)
+        const filteredSuggestions = cities.map(city => {
+            const randomNumber = Math.floor(Math.random() * 99) + 1; // Números del 1 al 99
+            const randomPlace = placeVariants[Math.floor(Math.random() * placeVariants.length)];
+            return `${text} ${randomPlace} ${randomNumber}, ${city}, España`;
+        });
         setSuggestions(filteredSuggestions);
     
         if (text.length > 0) {
-            const simulatedResults = filteredSuggestions.map(city => generateRandomData(city.split(',')[1].trim()));
+            const simulatedResults = filteredSuggestions.map((suggestion, index) => {
+                const city = suggestion.split(',')[1].trim();
+                const data = generateRandomData(city);
+                // Generar números totales aleatorios para cada resultado
+                const randomTotalBatteries = data.batteries + Math.floor(Math.random() * 20) + 5;
+                const randomTotalLockers = data.lockers + Math.floor(Math.random() * 30) + 10;
+                return {
+                    ...data,
+                    name: suggestion.split(',')[0].trim(), // Usar la dirección completa con el número
+                    totalBatteries: randomTotalBatteries,
+                    totalLockers: randomTotalLockers,
+                };
+            });
             
             // Filtrar según la opción seleccionada
             const filteredResults = simulatedResults.filter(item => {
@@ -157,12 +177,12 @@ const Search: React.FC<Props> = ({ navigation }) => {
                             <View style={{flexDirection:"row"}}>
                             {(selectedOption === 'batteries' || selectedOption=== null) && (
                                 <Text style={styles.resultInfo}>
-                                    Baterías: {item.batteries}/{item.batteries + Math.floor(Math.random() * 5)}
+                                    Baterías: {item.batteries}/{item.totalBatteries || item.batteries + Math.floor(Math.random() * 5)}
                                 </Text>
                             )}
                             {(selectedOption === 'lockers' || selectedOption=== null) && (
                                 <Text style={styles.resultInfo} >
-                                    Taquillas: {item.lockers}/{item.lockers + Math.floor(Math.random() * 5)}
+                                    Taquillas: {item.lockers}/{item.totalLockers || item.lockers + Math.floor(Math.random() * 5)}
                                 </Text>
                             )}
                             </View>
@@ -235,10 +255,14 @@ const Search: React.FC<Props> = ({ navigation }) => {
                             style={styles.iconRight}
                         />
                     </TouchableOpacity>
-                    {/* Mostrar checkboxes si está activado */}
-                {showCheckboxes && renderCheckboxes()}
-
                 </View>
+
+                {/* Mostrar checkboxes debajo del input como combobox */}
+                {showCheckboxes && (
+                    <View style={styles.filterDropdownContainer}>
+                        {renderCheckboxes()}
+                    </View>
+                )}
 
                 {/* Mostrar sugerencias mientras escribe */}
                 {suggestions.length > 0 && (
@@ -398,21 +422,31 @@ const styles = StyleSheet.create({
         position: 'absolute',
         zIndex: -1, // Para que quede debajo de las tarjetas
     },
+    filterDropdownContainer: {
+        backgroundColor: 'white',
+        borderRadius: 5,
+        marginTop: 5,
+        marginBottom: 10,
+        paddingVertical: 8,
+        paddingHorizontal: 12,
+        borderWidth: 1,
+        borderColor: colors.gray,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 3,
+        zIndex: 6,
+    },
     checkboxContainer: {
         flexDirection: 'row',
-        backgroundColor: 'white',
-        padding: 10,
-        borderRadius: 5,
-        position: 'absolute',
-        top: -40, // Ajustar según sea necesario
-        right: 0, // Ajustar según sea necesario
-        elevation: 5,
-        zIndex: 10,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
     },
     checkboxText: {
-        fontSize: 13,
-        marginRight:10,
-
+        fontSize: 14,
+        marginRight: 15,
+        color: colors.negro,
     },
     
 });

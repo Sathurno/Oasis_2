@@ -62,8 +62,18 @@ const App = () => {
           <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
           <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
           <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
-          <Stack.Screen name="Home_empty" component={Home_empty} options={{ headerShown: false }} />
-          <Stack.Screen name="Home_stack" component={Home_stack} options={{ headerShown: false }} />
+          <Stack.Screen 
+            name="Home_empty" 
+            component={Home_empty} 
+            options={{ headerShown: false }}
+            initialParams={{ tipo: false }}
+          />
+          <Stack.Screen 
+            name="Home_stack" 
+            component={Home_stack} 
+            options={{ headerShown: false }}
+            initialParams={{ tipo: false }}
+          />
           <Stack.Screen name="Search" component={Search} options={{ headerShown: false }} />
           <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
           <Stack.Screen name="Result" component={Result} options={{ headerShown: false }} />

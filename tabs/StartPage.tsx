@@ -79,7 +79,7 @@ export default function StartPage({ navigation }: Props) {
           mode="text" 
           title={t('skip')} 
           textColor="#4461F2" 
-          onPress={() => navigation.navigate('Home')}
+          onPress={() => navigation.navigate('Home_empty', { tipo: false })}
         />
       </View>
     </ScrollView>
