@@ -78,6 +78,7 @@ const LogButton = ({
 const styles = StyleSheet.create({
   buttonContainer: {
     borderRadius: 8,
+    height: 50,
   },
   button: {
     borderRadius: 6,
