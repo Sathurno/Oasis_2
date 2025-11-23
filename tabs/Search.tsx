@@ -159,9 +159,14 @@ const Search: React.FC<Props> = ({ navigation }) => {
     const renderResult = ({ item, index }: any) => {
         const isUnavailable = index === 3; // Tarjeta roja
 
+        const handleResultPress = () => {
+            navigation.navigate('Result');
+        };
+
         return (
             <TouchableOpacity
                 activeOpacity={0.6} // Cambiar la opacidad al hacer clic
+                onPress={handleResultPress}
             >
                 <View
                     style={[
