@@ -166,7 +166,17 @@ const Search: React.FC<Props> = ({ navigation }) => {
         return (
             <TouchableOpacity
                 activeOpacity={0.6} // Cambiar la opacidad al hacer clic
-                onPress={handleResultPress}
+                onPress={() => {
+                    // Crear batería mock
+                    const newBattery = {
+                        id: `${Date.now()}`,
+                        name: item.name.split(',')[0], // Usar nombre del lugar
+                        totalRemaining: '100%',
+                        accumulatedCost: '0,00€',
+                        startTime: new Date().toLocaleString()
+                    };
+                    navigation.navigate('Home', { newBattery });
+                }}
             >
                 <View
                     style={[

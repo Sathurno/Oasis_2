@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import ScrollView from '../components/ScrollView';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../types';
 import { ThemedText } from "../components/ThemedText";
 import Header from '../components/Header';
@@ -13,12 +14,14 @@ import HeaderSection from '../components/HeaderSection';
 import colors from '../constants/Colors';
 
 type HomePageNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+type HomePageRouteProp = RouteProp<RootStackParamList, 'Home'>;
 
 interface Props {
     navigation: HomePageNavigationProp;
+    route: HomePageRouteProp;
 }
 
-const Home: React.FC<Props> = ({ navigation }) => {
+const Home: React.FC<Props> = ({ navigation, route }) => {
     const { t } = useTranslation();
     const [currentBatteryIndex, setCurrentBatteryIndex] = useState(0);
     const [currentLockerIndex, setCurrentLockerIndex] = useState(0);
@@ -27,20 +30,6 @@ const Home: React.FC<Props> = ({ navigation }) => {
     // Datos simulados de las baterías
     const [batteries, setBatteries] = useState([
         {
-            id: '1JKL5',
-            name: 'Batería 1JKL5',
-            totalRemaining: '60%',
-            accumulatedCost: '5,45€',
-            startTime: '10/05/2024 15h30'
-        },
-        {
-            id: '2MNO9',
-            name: 'Batería 2MNO9',
-            totalRemaining: '85%',
-            accumulatedCost: '2,10€',
-            startTime: '10/05/2024 16h15'
-        },
-        {
             id: '3PQR7',
             name: 'Batería 3PQR7',
             totalRemaining: '30%',
@@ -48,6 +37,23 @@ const Home: React.FC<Props> = ({ navigation }) => {
             startTime: '10/05/2024 12h00'
         }
     ]);
+
+    useEffect(() => {
+        if (route.params?.newBattery) {
+            const newBattery = route.params.newBattery;
+            setBatteries(prev => {
+                // Evitar duplicados
+                if (prev.some(b => b.id === newBattery.id)) return prev;
+                
+                const updated = [...prev, newBattery];
+                // Actualizar índice para mostrar la nueva batería
+                setCurrentBatteryIndex(updated.length - 1);
+                return updated;
+            });
+            // Limpiar parámetros para evitar añadirla de nuevo
+            navigation.setParams({ newBattery: undefined });
+        }
+    }, [route.params?.newBattery]);
 
     // Datos simulados de las taquillas
     const [lockers, setLockers] = useState([
@@ -128,13 +134,13 @@ const Home: React.FC<Props> = ({ navigation }) => {
 
                 {isLocker ? (
                     // Vista de Taquillas
-                    lockers.length > 0 ? (
+                    lockers.length > 0 && currentLocker ? (
                         <>
-                            <ThemedText type="subtitle" style={styles.lockerName}>{lockers[currentLockerIndex].name}</ThemedText>
+                            <ThemedText type="subtitle" style={styles.lockerName}>{currentLocker.name}</ThemedText>
                             <BatteryInfo
-                                totalRemaining={lockers[currentLockerIndex].location}
-                                accumulatedCost={lockers[currentLockerIndex].accumulatedCost}
-                                startTime={lockers[currentLockerIndex].startTime}
+                                totalRemaining={currentLocker.location}
+                                accumulatedCost={currentLocker.accumulatedCost}
+                                startTime={currentLocker.startTime}
                                 onNext={handleNextLocker}
                                 onPrev={handlePrevLocker}
                                 isLocker={true}
@@ -148,21 +154,21 @@ const Home: React.FC<Props> = ({ navigation }) => {
                             </ThemedText>
                             <TouchableOpacity style={styles.container2} onPress={() => navigation.navigate('Search')}>
                                 <ThemedText style={styles.registerLink} type="subtitle" sizeText={18}>
-                                    {t('Serach for a battery')}
+                                    {t('Search for a battery')}
                                 </ThemedText>
                             </TouchableOpacity>
                         </>
                     )
                 ) : (
                     // Vista de Baterías Portátiles
-                    batteries.length > 0 ? (
+                    batteries.length > 0 && currentBattery ? (
                         <>
                             {/* Información de la batería */}
-                            <ThemedText type="subtitle" style={styles.batteryName}>{batteries[currentBatteryIndex].name}</ThemedText>
+                            <ThemedText type="subtitle" style={styles.batteryName}>{currentBattery.name}</ThemedText>
                             <BatteryInfo
-                                totalRemaining={batteries[currentBatteryIndex].totalRemaining}
-                                accumulatedCost={batteries[currentBatteryIndex].accumulatedCost}
-                                startTime={batteries[currentBatteryIndex].startTime}
+                                totalRemaining={currentBattery.totalRemaining}
+                                accumulatedCost={currentBattery.accumulatedCost}
+                                startTime={currentBattery.startTime}
                                 onNext={handleNextBattery}
                                 onPrev={handlePrevBattery}
                             />
@@ -174,7 +180,7 @@ const Home: React.FC<Props> = ({ navigation }) => {
                         </ThemedText>
                         <TouchableOpacity style={styles.container2} onPress={() => navigation.navigate('Search')}>
                             <ThemedText style={styles.registerLink} type="subtitle" sizeText={18}>
-                                {t('Serach for a battery')}
+                                {t('Search for a battery')}
                             </ThemedText>
                         </TouchableOpacity>
                     </>)
